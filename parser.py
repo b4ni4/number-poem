@@ -1,35 +1,52 @@
 from words import d
 
-to_word = lambda x: d[int(x)]
-
 def parse(n):
-    l = len(str(n))
+    to_word = lambda x: d[int(x)]
 
-    if int(n) == 0:
-        yield 0
-        return
+    def parse_nums(n):
+        l = len(str(n))
 
-    if l >= 2 and str(n)[-2] == '1':
-        yield n % 100
-        n //= 100
-        n *= 100
+        if int(n) == 0:
+            yield 0
+            return
 
-    for i in range(l):
-        x = n % 10
-        n //= 10
+        if l >= 2 and str(n)[-2] == '1':
+            yield n % 100
+            n //= 100
+            n *= 100
 
-        if x:
-            yield x * 10 ** i
+        for i in range(l):
+            x = n % 10
+            n //= 10
 
+            if x:
+                yield x * 10 ** i
+
+    res = []
+    for i in parse_nums(n):
+        res.append(to_word(i))
+
+    return list(reversed(res))
+
+def deparse(arr):
+    sum = 0
+
+    for w in arr:
+        for k, v in d.items():
+            if v == w:
+                sum += k
+    
+    return sum
+    
 def main():
     n = int(input())
 
-    res = []
-    for i in parse(n):
-        res.append(to_word(i))
+    words = parse(n)
+    print(words)
 
-    print(' '.join(reversed(res)))
-    
+    deparsed = deparse(input().split())
+    print(deparsed)
+    print(n == deparsed)
 
 if __name__ == '__main__':
     main()
