@@ -1,4 +1,5 @@
 from words import d
+from russtress import Accent
 
 def parse(n):
     to_word = lambda x: d[int(x)]
@@ -37,6 +38,10 @@ def deparse(arr):
                 sum += k
     
     return sum
+
+def accent(text):
+    accent = Accent()
+    return accent.put_stress(text)
     
 def main():
     n = int(input())
@@ -44,9 +49,9 @@ def main():
     words = parse(n)
     print(words)
 
-    deparsed = deparse(input().split())
-    print(deparsed)
-    print(n == deparsed)
+    deparsed = deparse(words)
+
+    print(accent(' '.join(words)))
 
 if __name__ == '__main__':
     main()
