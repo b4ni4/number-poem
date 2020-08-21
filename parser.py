@@ -5,6 +5,10 @@ to_word = lambda x: d[int(x)]
 def parse(n):
     l = len(str(n))
 
+    if int(n) == 0:
+        yield 0
+        return
+
     if l >= 2 and str(n)[-2] == '1':
         yield n % 100
         n //= 100
