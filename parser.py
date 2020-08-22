@@ -49,12 +49,27 @@ def parse(n):
 def deparse(arr):
     sum = 0
 
+
+    # for w in arr:
+    #     for k, v in d.items():
+    #         if v == w:
+    #             sum += k
+    cur = 0
     for w in arr:
         for k, v in d.items():
-            if v == w:
-                sum += k
-    
-    return sum
+            if isinstance(v, list):
+                if len(v) == 3 and w in v:
+                    cur *= k
+                    sum += cur
+                    cur = 0
+                elif w in v:
+                    cur += k
+            else:
+                if v == w:
+                    cur += k
+
+    return sum + cur
+
 
 def accent(text):
     accent = Accent()
@@ -66,18 +81,18 @@ def main():
     words = parse(n)
     print(words)
 
-    deparsed = deparse(words)
-
     res = ''
+
     if isinstance(words[0], list):
         for i in range(len(words)):
-            l = len(words[i])
             k = 10 ** (3 * (len(words) - i - 1))
-            if k == 1:
+            if k == 1 and words[i][-1] != 'ноль':
                 res += ' '.join(words[i])
                 continue
 
             declination_flag = 0
+            if words[i][-1] == 'ноль':
+                continue
             if words[i][-1] == d[1][declination_flag]:
                 if k == 1000:
                     declination_flag = 1
@@ -102,7 +117,15 @@ def main():
                     res += ' '.join(words[i])
         print(res)
     else:
-        print(' '.join(words))
+        res = ' '.join(words)
+        print(res)
 
+    deparsed = deparse(res.split(' '))
+    print(res.split(' '))
+    print(deparsed)
+    if deparsed == n:
+        print('True')
+    else:
+        print('False')
 if __name__ == '__main__':
     main()
