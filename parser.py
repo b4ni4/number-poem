@@ -1,6 +1,42 @@
 from words import d
 from russtress import Accent
 
+def declination(words):
+    res = ''
+    if isinstance(words[0], list):
+        for i in range(len(words)):
+            k = 10 ** (3 * (len(words) - i - 1))
+            if k == 1 and words[i][-1] != 'ноль':
+                res += ' '.join(words[i])
+                continue
+
+            declination_flag = 0
+            if words[i][-1] == 'ноль':
+                continue
+            if words[i][-1] == d[1][declination_flag]:
+                if k == 1000:
+                    declination_flag = 1
+                    words[i][-1] = d[1][declination_flag]
+                words[i].append(d[k][0] + ' ')
+                res += ' '.join(words[i])
+                continue
+
+            elif words[i][-1] == d[2][declination_flag]:
+                if k == 1000:
+                    declination_flag = 1
+                    words[i][-1] = d[2][declination_flag]
+                words[i].append(d[k][1] + ' ')
+                res += ' '.join(words[i])
+                continue
+            else:
+                if words[i][-1] == d[3] or words[i][-1] == d[4]:
+                    words[i].append(d[k][1] + ' ')
+                    res += ' '.join(words[i])
+                else:
+                    words[i].append(d[k][2] + ' ')
+                    res += ' '.join(words[i])
+        return res
+
 def parse(n):
     to_word = lambda x: d[int(x)] if isinstance(d[int(x)], str) else d[int(x)][0]
 
@@ -77,55 +113,22 @@ def accent(text):
     
 def main():
     n = int(input())
-
     words = parse(n)
     print(words)
 
-    res = ''
-
-    if isinstance(words[0], list):
-        for i in range(len(words)):
-            k = 10 ** (3 * (len(words) - i - 1))
-            if k == 1 and words[i][-1] != 'ноль':
-                res += ' '.join(words[i])
-                continue
-
-            declination_flag = 0
-            if words[i][-1] == 'ноль':
-                continue
-            if words[i][-1] == d[1][declination_flag]:
-                if k == 1000:
-                    declination_flag = 1
-                    words[i][-1] = d[1][declination_flag]
-                words[i].append(d[k][0] + ' ')
-                res += ' '.join(words[i])
-                continue
-
-            elif words[i][-1] == d[2][declination_flag]:
-                if k == 1000:
-                    declination_flag = 1
-                    words[i][-1] = d[2][declination_flag]
-                words[i].append(d[k][1] + ' ')
-                res += ' '.join(words[i])
-                continue
-            else:
-                if words[i][-1] == d[3] or words[i][-1] == d[4]:
-                        words[i].append(d[k][1] + ' ')
-                        res += ' '.join(words[i])
-                else:
-                    words[i].append(d[k][2] + ' ')
-                    res += ' '.join(words[i])
+    if n >= 1000:
+        res = declination(words)
         print(res)
     else:
         res = ' '.join(words)
         print(res)
 
     deparsed = deparse(res.split(' '))
-    print(res.split(' '))
     print(deparsed)
     if deparsed == n:
         print('True')
     else:
         print('False')
+
 if __name__ == '__main__':
     main()
