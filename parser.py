@@ -2,10 +2,27 @@ from words import d
 from russtress import Accent
 
 def parse(n):
-    to_word = lambda x: d[int(x)]
+    to_word = lambda x: d[int(x)] if isinstance(d[int(x)], str) else d[int(x)][0]
+
+    if n >= 1000:
+        millenium_split = []
+        k = n
+        while k >= 1000:
+            q = k % 1000
+            millenium_split.append(q)
+            k //= 1000
+        millenium_split.append(k)
+
+        millenium_split = list(reversed(millenium_split))
+
+        res_m = []
+        for split in millenium_split:
+            res_m.append(parse(int(split)))
+        return res_m
 
     def parse_nums(n):
         l = len(str(n))
+
 
         if int(n) == 0:
             yield 0
@@ -51,7 +68,41 @@ def main():
 
     deparsed = deparse(words)
 
-    print(accent(' '.join(words)))
+    res = ''
+    if isinstance(words[0], list):
+        for i in range(len(words)):
+            l = len(words[i])
+            k = 10 ** (3 * (len(words) - i - 1))
+            if k == 1:
+                res += ' '.join(words[i])
+                continue
+
+            declination_flag = 0
+            if words[i][-1] == d[1][declination_flag]:
+                if k == 1000:
+                    declination_flag = 1
+                    words[i][-1] = d[1][declination_flag]
+                words[i].append(d[k][0] + ' ')
+                res += ' '.join(words[i])
+                continue
+
+            elif words[i][-1] == d[2][declination_flag]:
+                if k == 1000:
+                    declination_flag = 1
+                    words[i][-1] = d[2][declination_flag]
+                words[i].append(d[k][1] + ' ')
+                res += ' '.join(words[i])
+                continue
+            else:
+                if words[i][-1] == d[3] or words[i][-1] == d[4]:
+                        words[i].append(d[k][1] + ' ')
+                        res += ' '.join(words[i])
+                else:
+                    words[i].append(d[k][2] + ' ')
+                    res += ' '.join(words[i])
+        print(res)
+    else:
+        print(' '.join(words))
 
 if __name__ == '__main__':
     main()
