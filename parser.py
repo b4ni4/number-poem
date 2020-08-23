@@ -105,6 +105,8 @@ def deparse(arr):
         for k, v in d.items():
             if isinstance(v, list):
                 if len(v) == 3 and w in v:
+                    if cur == 0:
+                        cur = 1
                     cur *= k
                     sum += cur
                     cur = 0
@@ -122,15 +124,11 @@ def accent(text):
     return accent.put_stress(text)
     
 def main():
-    n = int(input())
-    print(get_parsed_string(n))
+    # n = int(input())
+    # print(get_parsed_string(n))
     string = input()
     deparsed = deparse(string.split(' '))
     print(deparsed)
-    # if deparsed == n:
-    #     print('True')
-    # else:
-    #     print('False')
 
 if __name__ == '__main__':
     main()

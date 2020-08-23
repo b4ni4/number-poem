@@ -53,19 +53,36 @@ def cosntruct_line(formula):
     else:
         return cosntruct_line(formula)
 
+poems_nums = []
+poems_text = []
 formula = input()
+
+arr_num = []
+arr_text = []
+mas_num = []
+mas_text = []
+
 for i in range(100):
     try:
-        deg = cosntruct_line(formula)
-        print(deg)
-        print(is_legit(deg))
-        s = ''
-        for word in deg:
-            s += d_new[word]
-        if formula == s:
-            print('True')
+        deg = is_legit(cosntruct_line(formula))
+        for num in deg:
+            mas_num.append(deparse(num.split(' ')))
+            mas_text.append(num)
+        arr_num.append(mas_num)
+        arr_text.append(mas_text)
+        mas_num = []
+        mas_text = []
+        if len(arr_num) == 4:
+            poems_nums.append(arr_num)
+            arr_num = []
     except:
         continue
-
+for poem in poems_nums:
+    print('\n')
+    for string in poem:
+        s = ''
+        for i in range(len(string)):
+            s += (str(string[i]) + ' ')
+        print(s)
 # word = input()
 # print(get_rhythmic(word))
