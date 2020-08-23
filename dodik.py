@@ -75,6 +75,8 @@ for i in range(100):
         if len(arr_num) == 4:
             poems_nums.append(arr_num)
             arr_num = []
+            poems_text.append(arr_text)
+            arr_text = []
     except:
         continue
 for poem in poems_nums:
@@ -83,6 +85,14 @@ for poem in poems_nums:
         s = ''
         for i in range(len(string)):
             s += (str(string[i]) + ' ')
+        print(s)
+
+for poem in poems_text:
+    print('\n')
+    for string in poem:
+        s = ''
+        for i in range(len(string)):
+            s += (string[i] + ' ')
         print(s)
 # word = input()
 # print(get_rhythmic(word))
