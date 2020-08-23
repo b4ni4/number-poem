@@ -1,6 +1,16 @@
 from words import d
 from russtress import Accent
 
+def get_parsed_string(n):
+    words = parse(n)
+
+    if n >= 1000:
+        res = declination(words)
+        return res.rstrip()
+    else:
+        res = ' '.join(words)
+        return res
+
 def declination(words):
     res = ''
     if isinstance(words[0], list):
@@ -113,22 +123,14 @@ def accent(text):
     
 def main():
     n = int(input())
-    words = parse(n)
-    print(words)
-
-    if n >= 1000:
-        res = declination(words)
-        print(res)
-    else:
-        res = ' '.join(words)
-        print(res)
-
-    deparsed = deparse(res.split(' '))
+    print(get_parsed_string(n))
+    string = input()
+    deparsed = deparse(string.split(' '))
     print(deparsed)
-    if deparsed == n:
-        print('True')
-    else:
-        print('False')
+    # if deparsed == n:
+    #     print('True')
+    # else:
+    #     print('False')
 
 if __name__ == '__main__':
     main()

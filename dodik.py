@@ -1,15 +1,19 @@
 import random
 from words import ddd1, d_new, d_formula
-d_avai = {
-    'a': '1',
-    'b': '10',
-    'c': '01',
-    'd': '100',
-    'e': '010',
-    'f': '0100',
-    'g': '001',
-    'h': '0010'
-}
+from parser import deparse, get_parsed_string
+
+def is_legit(string):
+    words = string.split()
+    restart = True
+    while restart:
+        restart = False
+        for i in range(len(words)-1):
+            if get_parsed_string(deparse((words[i] + ' '+ words[i+1]).split())) == words[i] + ' ' + words[i+1]:
+                words[i] += (' ' + words[i+1])
+                words.pop(i+1)
+                restart = True
+                break
+    return words
 
 def get_rhythmic(word):
     sylled_word = ddd1[word]
@@ -50,13 +54,14 @@ def cosntruct_line(formula):
         return cosntruct_line(formula)
 
 formula = input()
-for i in range(10):
+for i in range(100):
     try:
         deg = cosntruct_line(formula)
         print(deg)
+        print(is_legit(deg))
         s = ''
-        for char in deg:
-            s += d_avai[char]
+        for word in deg:
+            s += d_new[word]
         if formula == s:
             print('True')
     except:
